@@ -1,0 +1,13 @@
+{
+  "name": "hextech-draw-simulator",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "cd api && npm start",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
+}
