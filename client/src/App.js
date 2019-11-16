@@ -1,45 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './lor_intro_screen_with_logo.png';
 import './App.css';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      apiResponse: ""
+      deck_code: ''
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.calculateDeck = this.calculateDeck.bind(this);
   }
 
-  callAPI() {
-    fetch("http://localhost:3001/testAPI")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }))
-      .catch(err => err);
+  handleChange(e) {
+    this.setState({deck_code: e.target.value});
   }
 
-  componentDidMount() {
-    this.callAPI();
+  calculateDeck(e) {
+    e.preventDefault();
+    fetch('http://localhost:3001/runeterra/calculate', {
+      method: "POST",
+      body: JSON.stringify(this.state),
+      headers: {'Content-Type': 'application/json'}
+    }).then(res => res.text())
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => console.error(err));
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-        <p className="App-intro">{this.state.apiResponse}</p>
+        <img src={logo} className="App-background" alt="logo" />
+        <div className="App-body">
+          <form onSubmit={this.calculateDeck} autoComplete="off">
+            Deck Code: <input type="text" name="deck_code" onChange={this.handleChange}/>
+          </form>
+        </div>
       </div>
     );
   }
