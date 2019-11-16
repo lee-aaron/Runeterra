@@ -2,17 +2,18 @@ var express = require('express');
 var router = express.Router();
 const { DeckEncoder } = require('runeterra');
 
-router.get('/', function(req, res, next) {
-  res.send('API is working properly');
-});
+let deck = [];
 
-router.post('/calculate', function (req, res, next) {
+router.post('/', function (req, res, next) {
   try {
-    const deck = DeckEncoder.decode(req.body.deck_code);
-    console.log(deck);
-    res.send('Success');
+    deck = DeckEncoder.decode(req.body.deck_code);
+
+    // grab all deck info given the translated deck
+
+
+    res.send({status: 'success', deck: deck});
   } catch (e) {
-    res.send('Error');
+    res.send({status: 'error'});
   }
 });
 
