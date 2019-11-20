@@ -1,0 +1,27 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+}
+
+.modal {
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90vh;
+  width: 90vw;
+  display: inline-block;
+}
+
+.modal-cards {
+  height: 200px;
+  padding: 10px;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+}
