@@ -1,0 +1,8 @@
+.card-image {
+  width: 10vw;
+}
+
+.card-body {
+  width: fit-content;
+  display: inline-block;
+}
