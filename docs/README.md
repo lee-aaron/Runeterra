@@ -15,7 +15,7 @@ We propose that the HDS should be added to the current Legends of Runeterra deck
 
 ## How the math works
 
-The HDS's probability calculations utilize the hypergeometric distribution. As a disclaimer, we did not invent this distrubution, and there have been other [calculators that perform such calculations for card games such as Magic The Gathering] (http://www.magicworkstation.com/). The hypergeometric distrubution gives the probability of *k* successful draws of a range of *K* specified cards, in *n* number of draws from *N* total cards without replacement. Probabilities of wanting 'at least one copy' of a card are simply the sums of the the probabilities of having one copy, two copies, and three copies of a card.
+The HDS's probability calculations utilize the hypergeometric distribution. As a disclaimer, we did not invent this distrubution, and there have been other calculators that perform such calculations for card games [such as Magic The Gathering](http://www.magicworkstation.com/). The hypergeometric distrubution gives the probability of *k* successful draws of a range of *K* specified cards, in *n* number of draws from *N* total cards without replacement. Probabilities of wanting 'at least one copy' of a card are simply the sums of the the probabilities of having one copy, two copies, and three copies of a card.
 
 Applying this distrubution for multiple turns is done by manipulating *K*, *n*, and *N*. 
 
