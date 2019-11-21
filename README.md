@@ -8,9 +8,10 @@ Under the docs folder, it contains information on what our project idea is and o
 
 ## How to Run
 
-You can clone this and run `npm install && npm run start` to start both the client and api services.
+You can clone this and run `npm install && npm run dev` to start both the client and api services.
 
 ## Stack / Technologies
 
 Frontend: React -> serves the webpage for our application
+
 Backend: Node.js -> handles the backend such as parsing deck codes, calculating statistics
