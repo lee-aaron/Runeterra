@@ -37,6 +37,10 @@ router.post('/', function (req, res, next) {
 router.get('/image/:id', function(req, res, next) {
   var path = __dirname.replace('routes', '') + "/data/cards/" + req.params.id + ".png";
   res.sendFile(path);
-})
+});
+
+router.get('/calculate', function(req, res, next) {
+  
+});
 
 module.exports = router;

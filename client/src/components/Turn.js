@@ -29,7 +29,7 @@ const Turn = ({ name, bucket, handleDrop }) => {
 
   return (
     <div ref={drop} className="modal-bucket">
-      {name}
+      <div className="modal-bucket-title">{name}</div>
       {bucket.map((card, index) => (
         <Card key={card.cardCode + "-" + index} card={card} bucket={bucket} />
       ))}

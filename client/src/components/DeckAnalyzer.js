@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import ReactDOM from 'react-dom';
 
 import './DeckAnalyzer.css';
 import Card from './Card';
@@ -25,13 +26,59 @@ class DeckAnalyzer extends Component {
       turn7: [],
       turn8: [],
       turn9: [],
-      turn10: []
+      turn10: [],
+      isScrolling: false
     }
 
     this.handleShow = this.handleShow.bind(this);
     this.props.showModal.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
   }
+
+  componentWillUpdate = (nextProps, nextState) => {
+    if (this.state.isScrolling !== nextState.isScrolling) {
+      this.toggleScrolling(nextState.isScrolling);
+    }
+  };
+
+  toggleScrolling = (isEnable) => {
+    if (isEnable) {
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('mouseup', this.onMouseUp);
+    } else {
+      window.removeEventListener('mousemove', this.onMouseMove);
+    }
+  };
+
+  onMouseMove = (event) => {
+    if ( !this.state.isScrolling ) return;
+    const x = event.pageX - this._scroller.offsetLeft;
+    const walk = (x - this.state.startX) * 1.5;
+    if ( !walk || !x ) return;
+    this._scroller.scrollLeft = this.state.scrollLeft - walk;
+  };
+
+  onMouseUp = (event) => {
+    this.setState({
+      isScrolling: false
+    });
+  };
+
+  onMouseLeave = (event) => {
+    this.setState({
+      isScrolling: false
+    })
+  }
+
+  onMouseDown = (event) => {
+    let startX = event.pageX - this._scroller.offsetLeft;
+    let scrollLeft = this._scroller.scrollLeft;
+    this.setState({ isScrolling: true, scrollLeft: scrollLeft, startX: startX });
+  };
+
+  attachScroller = (scroller) => {
+    this._scroller = ReactDOM.findDOMNode(scroller);
+  };
 
   handleShow() {
     this.setState({
@@ -51,7 +98,12 @@ class DeckAnalyzer extends Component {
         <div className="modal">
           <h5 className="content">Card Simulator</h5>
           <DndProvider backend={HTML5Backend}>
-            <div className="modal-bucket-container">
+            <div className="modal-bucket-container" 
+              ref={this.attachScroller}
+              onMouseDown={this.onMouseDown}
+              onScroll={this.onMouseMove}
+              onMouseUp={this.onMouseUp}
+              onMouseLeave={this.onMouseLeave}>
               <Turn name="Turn 1" bucket={this.state.turn1} handleDrop={this.handleDrop} />
               <Turn name="Turn 2" bucket={this.state.turn2} handleDrop={this.handleDrop} />
               <Turn name="Turn 3" bucket={this.state.turn3} handleDrop={this.handleDrop} />
