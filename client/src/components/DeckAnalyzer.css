@@ -26,5 +26,12 @@
 }
 
 .modal-bucket-container {
-
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  transition: all 0.2s;
+  transform: scale(0.98);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
