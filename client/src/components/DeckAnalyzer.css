@@ -19,9 +19,12 @@
 }
 
 .modal-cards {
-  height: 200px;
   padding: 10px;
   width: 100%;
   bottom: 0;
-  position: fixed;
+  position: relative;
+}
+
+.modal-bucket-container {
+
 }
