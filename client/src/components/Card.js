@@ -1,27 +1,32 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './Card.css';
+import { Image } from 'react-bootstrap';
+import { useDrag } from 'react-dnd';
 
-class Card extends Component {
+const Card = ({card, bucket}) => {
 
-  constructor(props) {
-    super(props);
+  card.type = 'Card';
 
-    this.state = {
-      card: this.props.card
-    }
-  }
+  const [{ opacity }, drag] = useDrag({
+    item: card,
+    end(item, monitor) {
+      const dropResult = monitor.getDropResult()
+      if ( !dropResult && bucket ) {
+        bucket.splice(bucket.indexOf(card), 1);
+        card.count += 1;
+      }
+    },
+    collect: monitor => ({
+      opactiy: monitor.isDragging() ? 0.4 : 1
+    })
+  })
 
-  render() {
-
-    let card = this.state.card;
-
-    return (
-      <div className="card-body">
-        <img className="card-image" src={"http://localhost:3001/runeterra/image/" + card.cardCode} />
-      </div>
-    )
-  }
-
+  return (
+    <div ref={drag} className="card-body">
+      <Image className="card-image" src={"http://localhost:3001/runeterra/image/" + card.cardCode} />
+      <h3 className="card-overlay">{card.count}</h3>
+    </div>
+  )
 }
 
 export default Card;

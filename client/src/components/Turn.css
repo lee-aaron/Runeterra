@@ -1,0 +1,7 @@
+.modal-bucket {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 10px;
+  height: 320px;
+  overflow: scroll;
+}
