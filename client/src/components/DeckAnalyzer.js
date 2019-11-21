@@ -17,6 +17,7 @@ class DeckAnalyzer extends Component {
       deck: this.props.deck,
       origDeck: this.props.deck,
       showModal: true,
+      mulligan: [],
       turn1: [],
       turn2: [],
       turn3: [],
@@ -27,7 +28,8 @@ class DeckAnalyzer extends Component {
       turn8: [],
       turn9: [],
       turn10: [],
-      isScrolling: false
+      isScrolling: false,
+      totalProbability: 1
     }
 
     this.handleShow = this.handleShow.bind(this);
@@ -92,11 +94,23 @@ class DeckAnalyzer extends Component {
     card.count -= 1;
   }
 
+  // calculates probability per bucket
+  handleBucketChange = () => {
+    fetch('http://localhost:3001/runeterra/calculate', {
+      method: 'POST',
+      body: JSON.stringify(this.state.mulligan),
+      headers: {'Content-Type': 'application/json'}
+    }).then(res => res.json())
+    .then(res => {
+      console.log(res);
+    })
+  }
+
   render() {
     return (
       <Modal show={this.state.showModal} onHide={this.handleShow}>
         <div className="modal">
-          <h5 className="content">Card Simulator</h5>
+          <h5 className="content">Hextech Draw Simulator</h5>
           <DndProvider backend={HTML5Backend}>
             <div className="modal-bucket-container" 
               ref={this.attachScroller}
@@ -104,20 +118,25 @@ class DeckAnalyzer extends Component {
               onScroll={this.onMouseMove}
               onMouseUp={this.onMouseUp}
               onMouseLeave={this.onMouseLeave}>
-              <Turn name="Turn 1" bucket={this.state.turn1} handleDrop={this.handleDrop} />
-              <Turn name="Turn 2" bucket={this.state.turn2} handleDrop={this.handleDrop} />
-              <Turn name="Turn 3" bucket={this.state.turn3} handleDrop={this.handleDrop} />
-              <Turn name="Turn 4" bucket={this.state.turn4} handleDrop={this.handleDrop} />
-              <Turn name="Turn 5" bucket={this.state.turn5} handleDrop={this.handleDrop} />
-              <Turn name="Turn 6" bucket={this.state.turn6} handleDrop={this.handleDrop} />
-              <Turn name="Turn 7" bucket={this.state.turn7} handleDrop={this.handleDrop} />
-              <Turn name="Turn 8" bucket={this.state.turn8} handleDrop={this.handleDrop} />
-              <Turn name="Turn 9" bucket={this.state.turn9} handleDrop={this.handleDrop} />
-              <Turn name="Turn 10" bucket={this.state.turn10} handleDrop={this.handleDrop} />
+                <Turn name="Mulligan" bucket={this.state.mulligan} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange}/>
+                <Turn name="Turn 1" bucket={this.state.turn1} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 2" bucket={this.state.turn2} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 3" bucket={this.state.turn3} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 4" bucket={this.state.turn4} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 5" bucket={this.state.turn5} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 6" bucket={this.state.turn6} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 7" bucket={this.state.turn7} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 8" bucket={this.state.turn8} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 9" bucket={this.state.turn9} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+                <Turn name="Turn 10" bucket={this.state.turn10} handleDrop={this.handleDrop} handleBucketChange={this.handleBucketChange} />
+            </div>
+            <div className="modal-probability">
+              <h5>Chance</h5>
+              <div>{this.state.totalProbability}</div>
             </div>
             <div className="modal-cards">
               {this.state.deck.map((card, index) => (
-                <Card key={card.cardCode + "-" + index} card={card} />
+                <Card key={card.cardCode + "-" + index} card={card} handleBucketChange={this.handleBucketChange}/>
               ))}
             </div>
           </DndProvider>

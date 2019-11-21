@@ -39,8 +39,9 @@ router.get('/image/:id', function(req, res, next) {
   res.sendFile(path);
 });
 
-router.get('/calculate', function(req, res, next) {
-  
+router.post('/calculate', function(req, res, next) {
+  console.log(req.body);
+  res.send({status: 'success', probability: 1});
 });
 
 module.exports = router;
