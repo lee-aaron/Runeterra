@@ -66,7 +66,7 @@ function binomial(n,k) {
   return binomials[n][k];
 }
 
-function calculateBucket(bucket, N, deckCount) {
+function calculateBucket(bucket, N, deckCount,currTurn) {
   /* 
     N = total deck size
     n = number of cards drawing on this turn
@@ -88,18 +88,26 @@ function calculateBucket(bucket, N, deckCount) {
     }
   }
 
+
   if ( bucket.length > 0 ) {
 
-    let totalProb = 0;
-    let n = bucket.length;
-    
-    for (key in cardCount) {
+    let totalProb = 1; 
+    let n = currTurn + 4;
 
+
+    for (key in cardCount) {
       let K = deckCount[key];
       let k = cardCount[key].currCount;
+      let cardProb = 0;
 
-      totalProb += (binomial(K, k) * binomial(N-K, n-k) / binomial(N,n))
+      for (var kCurr = k; kCurr < K; kCurr++){
+        cardProb += (binomial(K, kCurr) * binomial(N-K, n-kCurr) / binomial(N,n));
+      }
       deckCount[key] -= k;
+      N -= k;
+      n -= k;   
+
+      totalProb *= cardProb;
     }
 
     if ( !totalProb ) totalProb = 1;
@@ -125,27 +133,27 @@ router.post('/calculate', function(req, res, next) {
   let turn9 = req.body[9];
   let turn10 = req.body[10];
   let N = 40;
-  let mulliganProb = calculateBucket(mulligan, N, deckCount);
+  let mulliganProb = calculateBucket(mulligan, N, deckCount,0);
   N -= mulligan.length;
-  let turn1Prob = calculateBucket(turn1, N, deckCount);
+  let turn1Prob = calculateBucket(turn1, N, deckCount,1);
   N -= turn1.length;
-  let turn2Prob = calculateBucket(turn2, N, deckCount);
+  let turn2Prob = calculateBucket(turn2, N, deckCount,2);
   N -= turn2.length;
-  let turn3Prob = calculateBucket(turn3, N, deckCount);
+  let turn3Prob = calculateBucket(turn3, N, deckCount,3);
   N -= turn3.length;
-  let turn4Prob = calculateBucket(turn4, N, deckCount);
+  let turn4Prob = calculateBucket(turn4, N, deckCount,4);
   N -= turn4.length;
-  let turn5Prob = calculateBucket(turn5, N, deckCount);
+  let turn5Prob = calculateBucket(turn5, N, deckCount,5);
   N -= turn5.length;
-  let turn6Prob = calculateBucket(turn6, N, deckCount);
+  let turn6Prob = calculateBucket(turn6, N, deckCount,6);
   N -= turn6.length;
-  let turn7Prob = calculateBucket(turn7, N, deckCount);
+  let turn7Prob = calculateBucket(turn7, N, deckCount,7);
   N -= turn7.length;
-  let turn8Prob = calculateBucket(turn8, N, deckCount);
+  let turn8Prob = calculateBucket(turn8, N, deckCount,8);
   N -= turn8.length;
-  let turn9Prob = calculateBucket(turn9, N, deckCount);
+  let turn9Prob = calculateBucket(turn9, N, deckCount,9);
   N -= turn9.length;
-  let turn10Prob = calculateBucket(turn10, N, deckCount);
+  let turn10Prob = calculateBucket(turn10, N, deckCount,10);
   let totalProb = mulliganProb * turn1Prob * turn2Prob * turn3Prob * turn4Prob * turn5Prob * turn6Prob * turn7Prob * turn8Prob * turn9Prob * turn10Prob;
   if (totalProb == 0) {
     totalProb = 1;
