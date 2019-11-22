@@ -7,7 +7,7 @@ const Items = {
   Card: 'Card'
 }
 
-const Turn = ({ name, bucket, handleDrop }) => {
+const Turn = ({ name, bucket, handleDrop, handleBucketChange }) => {
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: Items.Card,
@@ -31,7 +31,7 @@ const Turn = ({ name, bucket, handleDrop }) => {
     <div ref={drop} className="modal-bucket">
       <div className="modal-bucket-title">{name}</div>
       {bucket.map((card, index) => (
-        <Card key={card.cardCode + "-" + index} card={card} bucket={bucket} />
+        <Card key={card.cardCode + "-" + index} card={card} bucket={bucket} handleBucketChange={handleBucketChange} />
       ))}
     </div>
   );

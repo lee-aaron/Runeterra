@@ -3,7 +3,7 @@ import './Card.css';
 import { Image } from 'react-bootstrap';
 import { useDrag } from 'react-dnd';
 
-const Card = ({card, bucket}) => {
+const Card = ({card, bucket, handleBucketChange}) => {
 
   card.type = 'Card';
 
@@ -15,6 +15,7 @@ const Card = ({card, bucket}) => {
         bucket.splice(bucket.indexOf(card), 1);
         card.count += 1;
       }
+      handleBucketChange();
     },
     collect: monitor => ({
       opactiy: monitor.isDragging() ? 0.4 : 1

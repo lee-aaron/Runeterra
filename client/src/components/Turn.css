@@ -1,5 +1,5 @@
 .modal-bucket {
-  border: 1px solid black;
+  border: 1.5px solid gold;
   padding: 5px;
   margin: 2em 1em;
   height: 320px;
@@ -8,6 +8,7 @@
   min-height: 500px;
   display: inline-block;
   text-align: center;
+  background-color: rgba(40, 40, 40, 0.5);
 }
 
 .modal-bucket-title {
